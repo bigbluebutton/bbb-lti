@@ -28,7 +28,14 @@ class LtiService {
 
     boolean transactional = false
 
-    def endPoint = "localhost"
+    Properties properties = new Properties()
+    File propertiesFile = new File('/usr/share/bbb-lti/WEB-INF/classes/lti-config.properties')
+
+    def endPoint = propertiesFile.withInputStream {
+        properties.load(it)
+        return properties."ltiEndPoint"
+    }
+
     def consumers = "demo:welcome"
     def mode = "simple"
     def restrictedAccess = "true"
